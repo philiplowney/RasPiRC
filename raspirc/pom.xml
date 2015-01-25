@@ -20,6 +20,40 @@
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.3.0</version>
+				<configuration>
+					<container>
+						<containerId>jetty9x</containerId>
+						<type>remote</type>
+					</container>
+
+					<configuration>
+						<type>runtime</type>
+						<properties>
+							<cargo.hostname>192.168.1.13</cargo.hostname>
+							<cargo.servlet.port>8080</cargo.servlet.port>
+						</properties>
+					</configuration>
+
+					<deployer>
+						<type>remote</type>
+					</deployer>
+
+					<deployables>
+						<deployable>
+							<groupId>musingsofabuilder</groupId>
+							<artifactId>raspirc</artifactId>
+							<type>war</type>
+							<properties>
+								<context>/raspirc</context>
+							</properties>
+						</deployable>
+					</deployables>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
