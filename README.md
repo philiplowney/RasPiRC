@@ -11,3 +11,5 @@ This is an evolving little creation, but I'm blogging most steps here: <http://m
 * Some way to supply a steady five volts to the Pi - I'm using a buck-boost regulator, which I got here: <https://www.pololu.com/product/2574>
 
 ## Wiring Diagram
+Here's one way to do it:
+![](http://3.bp.blogspot.com/-1vmKdRUHSwc/VL__f6OqoCI/AAAAAAAAAJ4/g-nPGeaQzsc/s1600/pi%2Bconnected.png)
