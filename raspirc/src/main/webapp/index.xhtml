@@ -1,14 +1,20 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<h:head>
-	<title>Index Page</title>
-</h:head>
 <h:body>
-<h:form>
-	<p:commandButton value="Clicks are logged" action="#{indexUI.clickButton}"/>
-	</h:form>
+	<ui:composition template="./resources/templates/mainTemplate.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<p:commandButton value="Clicks are logged"
+					action="#{indexUI.clickButton}" />
+			</h:form>
+		</ui:define>
+		<ui:define name="heading">
+			Home
+		</ui:define>
+	</ui:composition>
 </h:body>
 </html>
