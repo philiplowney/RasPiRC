@@ -10,8 +10,98 @@
 			Vehicle Calibration
 		</ui:define>
 		<ui:define name="content">
+			<ui:param name="minSliderRange" value="4000" />
+			<ui:param name="maxSliderRange" value="8000" />
+			<ui:param name="sliderStep" value="100" />
 			<h:form id="mainForm">
-				up and running
+				<p:panel header="Steering">
+					<h:panelGrid columns="2" style="width: 150px">
+						<h:outputLabel value="Servo Index" />
+						<h:selectOneMenu>
+							<f:selectItem itemLabel="1" itemValue="1" />
+							<f:selectItem itemLabel="2" itemValue="2" />
+							<f:selectItem itemLabel="3" itemValue="3" />
+							<f:selectItem itemLabel="4" itemValue="4" />
+							<f:selectItem itemLabel="5" itemValue="5" />
+							<f:selectItem itemLabel="6" itemValue="6" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+
+					<h:panelGrid columns="4" style="width: 600px">
+
+						<h:outputLabel value="Centre Point" />
+						<p:slider for="centrePointSteeringValue"
+							minValue="#{minSliderRange}" maxValue="#{maxSliderRange}"
+							step="#{sliderStep}" style="width: 200px" />
+						<h:inputText id="centrePointSteeringValue" size="4" />
+						<p:commandButton value="Set" />
+
+						<h:outputLabel value="Full Left" />
+						<p:slider for="leftSteeringValue" minValue="#{minSliderRange}"
+							maxValue="#{maxSliderRange}" step="#{sliderStep}"
+							style="width: 200px" />
+						<h:inputText id="leftSteeringValue" size="4" />
+						<p:commandButton value="Try" />
+
+						<h:outputLabel value="Full Right" />
+						<p:slider for="rightSteeringValue" minValue="#{minSliderRange}"
+							maxValue="#{maxSliderRange}" step="#{sliderStep}"
+							style="width: 200px" />
+						<h:inputText id="rightSteeringValue" size="4" />
+						<p:commandButton value="Try" />
+
+					</h:panelGrid>
+				</p:panel>
+				<br />
+				<p:dialog widgetVar="throttleExplainerDlg"
+					header="Double-back Throttle" width="500">
+					<p>At high speeds, there is a danger that going into reverse will cause damage to the car's gearing. At very low speeds, this should not be an issue</p>
+					<p>Some ESCs are set to require two reverse signals to be received before going into reverse. The first signal often indicates 'brake'</p>
+					<p>If you wish for this application to always interpret one request for reverse from the user as two reverse signals to the device, tick 'Use double-back for reverse'</p>
+				</p:dialog>
+				<p:panel header="Throttle">
+					<h:panelGrid columns="2" style="width: 150px">
+						<h:outputLabel value="Servo Index" />
+						<h:selectOneMenu>
+							<f:selectItem itemLabel="1" itemValue="1" />
+							<f:selectItem itemLabel="2" itemValue="2" />
+							<f:selectItem itemLabel="3" itemValue="3" />
+							<f:selectItem itemLabel="4" itemValue="4" />
+							<f:selectItem itemLabel="5" itemValue="5" />
+							<f:selectItem itemLabel="6" itemValue="6" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+
+					<h:panelGrid columns="4" style="width: 600px">
+
+						<h:outputLabel value="Idle" />
+						<p:slider for="idleValue" minValue="#{minSliderRange}"
+							maxValue="#{maxSliderRange}" step="#{sliderStep}"
+							style="width: 200px" />
+						<h:inputText id="idleValue" size="4" />
+						<p:commandButton value="Set" />
+
+						<h:outputLabel value="Full Forward" />
+						<p:slider for="fullForwardValue" minValue="#{minSliderRange}"
+							maxValue="#{maxSliderRange}" step="#{sliderStep}"
+							style="width: 200px" />
+						<h:inputText id="fullForwardValue" size="4" />
+						<p:commandButton value="Try" />
+
+						<h:outputLabel value="Full Reverse" />
+						<p:slider for="fullReverseValue" minValue="#{minSliderRange}"
+							maxValue="#{maxSliderRange}" step="#{sliderStep}"
+							style="width: 200px" />
+						<h:inputText id="fullReverseValue" size="4" />
+						<p:commandButton value="Try" />
+
+
+						<h:outputLabel value="" />
+						<h:outputLabel value="Use double-back for reverse" />
+						<h:selectBooleanCheckbox />
+						<p:commandButton value="?" onclick="PF('throttleExplainerDlg').show()" />
+					</h:panelGrid>
+				</p:panel>
 			</h:form>
 		</ui:define>
 	</ui:composition>

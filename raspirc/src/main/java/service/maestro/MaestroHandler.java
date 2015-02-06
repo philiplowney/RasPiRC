@@ -73,7 +73,7 @@ public class MaestroHandler
 
 	private ScheduledExecutorService pollingService;
 
-		private class DevicePoller implements Runnable
+	private class DevicePoller implements Runnable
 	{
 		@Override
 		public void run()
@@ -95,11 +95,6 @@ public class MaestroHandler
 				}
 				LOGGER.info(LocalTime.now().toString() + " Listeners Notified.");
 				releaseConnection();
-			}
-			else
-			{
-				// LOGGER.info(LocalTime.now().toString() +
-				// " Device is still connected");
 			}
 		}
 	}
