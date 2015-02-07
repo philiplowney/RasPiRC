@@ -10,27 +10,18 @@
 <h:body>
 	<h1>RasPiRC</h1>
 	<h4>An internet-based remote control car</h4>
-	<p:growl widgetVar="growl" showDetail="true" autoUpdate="true"/>
-	<p:messages autoUpdate="true"/>
 	<h:form>
 		<p:megaMenu>
 			<p:menuitem value="Home" url="index.xhtml" />
 			<p:menuitem value="Servo Test" url="servoTest.xhtml" />
 			<p:menuitem value="Device Log" url="deviceLog.xhtml" />
+			<p:menuitem value="Vehicle Calibration" url="vehicleCalibration.xhtml" />
 		</p:megaMenu>
 	</h:form>
 	<h1>
 		<ui:insert name="heading" />
 	</h1>
-	<p:socket onMessage="handleMessage" channel="/notify" />
-	<script type="text/javascript">
-		function handleMessage(facesmessage) {
-			facesmessage.severity = 'info';
-
-			PF('growl').show([ facesmessage ]);
-		}
-	</script>
-
 	<ui:insert name="content" />
+	<p:growl id="growler" widgetVar="growl" showDetail="true" autoUpdate="true" />
 </h:body>
 </html>
