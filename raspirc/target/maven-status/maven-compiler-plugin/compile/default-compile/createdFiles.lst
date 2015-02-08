@@ -3,6 +3,7 @@ service\maestro\MaestroHandler.class
 service\maestro\DisconnectionListener.class
 service\maestro\MaestroHandler$1.class
 ui\DeviceLogUI.class
+model\calibration\VehicleCalibration$1.class
 ui\IndexUI.class
 service\maestro\exceptions\DeviceNotFoundException.class
 constants\commands\MaestroCommandType.class

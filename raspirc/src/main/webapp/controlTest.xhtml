@@ -1,0 +1,52 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+	<ui:composition template="./resources/templates/mainTemplate.xhtml">
+		<ui:define name="header">
+			<h:outputScript>
+				window.onload
+{
+document.addEventListener('keydown', function(e){
+				    if(e.keyCode === 37) {
+				        goLeft();
+				    } else if(e.keyCode === 39) {
+				        goRight();
+				    }
+				},false);
+				document.addEventListener('keyup', function(e){
+				    if(e.keyCode === 37 || e.keyCode === 39) {
+				        goStraight();
+				    }
+				},false);
+				}
+
+			</h:outputScript>
+		</ui:define>
+		<ui:define name="heading">
+			Control Test
+		</ui:define>
+		<ui:define name="content">
+
+
+			<h:form id="mainForm">
+				<p:commandButton value="Left" action="#{controlUI.clickLeft(100)}" />
+				<p:commandButton value="Right" action="#{controlUI.clickRight(100)}" />
+				<p:commandButton value="Straight"
+					action="#{controlUI.clickStraight()}" />
+				<p:commandButton value="Forward" />
+				<p:commandButton value="Reverse" />
+				<p:commandButton value="Idle" />
+				<p:remoteCommand name="goLeft" action="#{controlUI.clickLeft(100)}" />
+				<p:remoteCommand name="goRight"
+					action="#{controlUI.clickRight(100)}" />
+				<p:remoteCommand name="goStraight"
+					action="#{controlUI.clickStraight()}" />
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
