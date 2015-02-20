@@ -19,7 +19,7 @@ public class ConnectedTest
 	private static MaestroHandler handler = MaestroHandler.getInstance();
 	private final Logger LOGGER = Logger.getLogger(ConnectedTest.class.getCanonicalName());
 
-	@Test
+//	@Test
 	public void goForward() throws InterruptedException, UnknownConnectionFailureException, DeviceNotFoundException, DeviceInUseException
 	{
 		handler.establishConnection();

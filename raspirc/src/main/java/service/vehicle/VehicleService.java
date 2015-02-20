@@ -67,6 +67,33 @@ public class VehicleService
 	{
 		VehicleCalibration calibration = calibrationService.getCurrent();
 		short targetValue = determineTargetValue(percent, calibration.getFullValue(direction), calibration.getThrottleIdle());
+		if(direction==ThrottleDirection.REVERSE && calibration.isUseDoubleBackForReverse())
+		{
+			maestroHandler.executeCommand((short) calibration.getThrottleServoIndex(), MaestroCommandType.SET_TARGET, (short) targetValue);
+			try
+			{
+				Thread.sleep(50);
+			}
+			catch (InterruptedException e)
+			{
+				LOGGER.log(Level.SEVERE, "Unable to pause for reverse", e);
+			}
+			maestroHandler.executeCommand((short) calibration.getThrottleServoIndex(), MaestroCommandType.SET_TARGET, (short) calibration.getThrottleIdle());
+			try
+			{
+				Thread.sleep(50);
+			}
+			catch (InterruptedException e)
+			{
+				LOGGER.log(Level.SEVERE, "Unable to pause for reverse", e);
+			}
+		}
 		maestroHandler.executeCommand((short) calibration.getThrottleServoIndex(), MaestroCommandType.SET_TARGET, (short) targetValue);
+	}
+
+	public void idleThrottle()
+	{
+		VehicleCalibration calibration = calibrationService.getCurrent();
+		maestroHandler.executeCommand((short) calibration.getThrottleServoIndex(), MaestroCommandType.SET_TARGET, (short) calibration.getThrottleIdle());
 	}
 }

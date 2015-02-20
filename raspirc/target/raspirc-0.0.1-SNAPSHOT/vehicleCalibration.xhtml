@@ -10,14 +10,16 @@
 			Vehicle Calibration
 		</ui:define>
 		<ui:define name="content">
+
 			<ui:param name="minSliderRange" value="4000" />
 			<ui:param name="maxSliderRange" value="8000" />
-			<ui:param name="sliderStep" value="100" />
+			<ui:param name="sliderStep" value="50" />
 			<h:form id="mainForm">
 				<p:panel header="Steering">
 					<h:panelGrid columns="2" style="width: 150px">
 						<h:outputLabel value="Servo Index" />
-						<h:selectOneMenu>
+						<h:selectOneMenu
+							value="#{calibrationUI.calibration.steeringServoIndex}">
 							<f:selectItem itemLabel="1" itemValue="1" />
 							<f:selectItem itemLabel="2" itemValue="2" />
 							<f:selectItem itemLabel="3" itemValue="3" />
@@ -33,36 +35,46 @@
 						<p:slider for="centrePointSteeringValue"
 							minValue="#{minSliderRange}" maxValue="#{maxSliderRange}"
 							step="#{sliderStep}" style="width: 200px" />
-						<h:inputText id="centrePointSteeringValue" size="4" />
-						<p:commandButton value="Set" />
+						<h:inputText id="centrePointSteeringValue" size="4"
+							value="#{calibrationUI.calibration.steeringCentre}" />
+						<p:commandButton value="Set" action="#{calibrationUI.clickSetSteering()}"/>
 
 						<h:outputLabel value="Full Left" />
 						<p:slider for="leftSteeringValue" minValue="#{minSliderRange}"
 							maxValue="#{maxSliderRange}" step="#{sliderStep}"
 							style="width: 200px" />
-						<h:inputText id="leftSteeringValue" size="4" />
-						<p:commandButton value="Try" />
+						<h:inputText id="leftSteeringValue" size="4"
+							value="#{calibrationUI.calibration.fullLeft}" />
+						<p:commandButton value="Try" action="#{calibrationUI.clickTryLeft()}" />
 
 						<h:outputLabel value="Full Right" />
 						<p:slider for="rightSteeringValue" minValue="#{minSliderRange}"
 							maxValue="#{maxSliderRange}" step="#{sliderStep}"
 							style="width: 200px" />
-						<h:inputText id="rightSteeringValue" size="4" />
-						<p:commandButton value="Try" />
+						<h:inputText id="rightSteeringValue" size="4"
+							value="#{calibrationUI.calibration.fullRight}" />
+						<p:commandButton value="Try" action="#{calibrationUI.clickTryRight()}"/>
 
 					</h:panelGrid>
 				</p:panel>
 				<br />
 				<p:dialog widgetVar="throttleExplainerDlg"
 					header="Double-back Throttle" width="500">
-					<p>At high speeds, there is a danger that going into reverse will cause damage to the car's gearing. At very low speeds, this should not be an issue</p>
-					<p>Some ESCs are set to require two reverse signals to be received before going into reverse. The first signal often indicates 'brake'</p>
-					<p>If you wish for this application to always interpret one request for reverse from the user as two reverse signals to the device, tick 'Use double-back for reverse'</p>
+					<p>At high speeds, there is a danger that going into reverse
+						will cause damage to the car's gearing. At very low speeds, this
+						should not be an issue</p>
+					<p>Some ESCs are set to require two reverse signals to be
+						received before going into reverse. The first signal often
+						indicates 'brake'</p>
+					<p>If you wish for this application to always interpret one
+						request for reverse from the user as two reverse signals to the
+						device, tick 'Use double-back for reverse'</p>
 				</p:dialog>
 				<p:panel header="Throttle">
 					<h:panelGrid columns="2" style="width: 150px">
 						<h:outputLabel value="Servo Index" />
-						<h:selectOneMenu>
+						<h:selectOneMenu
+							value="#{calibrationUI.calibration.throttleServoIndex}">
 							<f:selectItem itemLabel="1" itemValue="1" />
 							<f:selectItem itemLabel="2" itemValue="2" />
 							<f:selectItem itemLabel="3" itemValue="3" />
@@ -78,30 +90,40 @@
 						<p:slider for="idleValue" minValue="#{minSliderRange}"
 							maxValue="#{maxSliderRange}" step="#{sliderStep}"
 							style="width: 200px" />
-						<h:inputText id="idleValue" size="4" />
-						<p:commandButton value="Set" />
+						<h:inputText id="idleValue" size="4"
+							value="#{calibrationUI.calibration.throttleIdle}" />
+						<p:commandButton value="Set" action="#{calibrationUI.clickSetThrottle()}" />
 
 						<h:outputLabel value="Full Forward" />
 						<p:slider for="fullForwardValue" minValue="#{minSliderRange}"
 							maxValue="#{maxSliderRange}" step="#{sliderStep}"
 							style="width: 200px" />
-						<h:inputText id="fullForwardValue" size="4" />
-						<p:commandButton value="Try" />
+						<h:inputText id="fullForwardValue" size="4"
+							value="#{calibrationUI.calibration.fullForward}" />
+						<p:commandButton value="Try" action="#{calibrationUI.clickTryForward()}"/>
 
 						<h:outputLabel value="Full Reverse" />
 						<p:slider for="fullReverseValue" minValue="#{minSliderRange}"
 							maxValue="#{maxSliderRange}" step="#{sliderStep}"
 							style="width: 200px" />
-						<h:inputText id="fullReverseValue" size="4" />
-						<p:commandButton value="Try" />
-
+						<h:inputText id="fullReverseValue" size="4"
+							value="#{calibrationUI.calibration.fullReverse}" />
+						<p:commandButton value="Try" action="#{calibrationUI.clickTryReverse()}"/>
 
 						<h:outputLabel value="" />
 						<h:outputLabel value="Use double-back for reverse" />
-						<h:selectBooleanCheckbox />
-						<p:commandButton value="?" onclick="PF('throttleExplainerDlg').show()" />
+						<h:selectBooleanCheckbox
+							value="#{calibrationUI.calibration.useDoubleBackForReverse}" />
+						<p:commandButton value="?"
+							onclick="PF('throttleExplainerDlg').show()" />
 					</h:panelGrid>
 				</p:panel>
+				<br />
+				<h:panelGrid columns="3">
+					<p:commandButton value="Save" action="#{calibrationUI.save()}" update="@form"/>
+					<p:commandButton value="Cancel Changes" action="#{calibrationUI.cancelChanges()}" update="@form"/>
+					<p:commandButton value="Restore Defaults" action="#{calibrationUI.restoreDefaults()}" update="@form"/>
+				</h:panelGrid>
 			</h:form>
 		</ui:define>
 	</ui:composition>

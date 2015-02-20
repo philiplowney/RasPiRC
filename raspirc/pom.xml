@@ -45,7 +45,7 @@
 					<configuration>
 						<type>runtime</type>
 						<properties>
-							<cargo.hostname>192.168.1.13</cargo.hostname>
+							<cargo.hostname>192.168.1.10</cargo.hostname>
 							<cargo.servlet.port>8080</cargo.servlet.port>
 						</properties>
 					</configuration>
@@ -113,5 +113,11 @@
 			<artifactId>usb4java</artifactId>
 			<version>1.2.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>LATEST</version>
+		</dependency>
+
 	</dependencies>
 </project>
