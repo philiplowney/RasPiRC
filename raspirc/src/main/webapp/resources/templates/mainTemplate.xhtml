@@ -6,24 +6,28 @@
 
 <h:head>
 	<title>RasPiRC - <ui:insert name="heading" /></title>
-	<ui:insert name="header"/>
+	<ui:insert name="header" />
+	<h:outputStylesheet library="css" name="template.css" />
 </h:head>
 <h:body>
-	<h1>RasPiRC</h1>
+	<div id="headerContainer">
+		<h1>RasPiRC</h1>
+		<h1 class="pageHeading">
+			<ui:insert name="heading" />
+		</h1>
+	</div>
 	<h4>An internet-based remote control car</h4>
 	<h:form>
 		<p:megaMenu>
-			<p:menuitem value="Home" url="index.xhtml" />
+			<p:menuitem value="Drive" url="drive.xhtml" />
 			<p:menuitem value="Servo Test" url="servoTest.xhtml" />
 			<p:menuitem value="Device Log" url="deviceLog.xhtml" />
-			<p:menuitem value="Vehicle Calibration" url="vehicleCalibration.xhtml" />
-			<p:menuitem value="Control Test" url="controlTest.xhtml" />
+			<p:menuitem value="Vehicle Calibration"
+				url="vehicleCalibration.xhtml" />
 		</p:megaMenu>
 	</h:form>
-	<h1>
-		<ui:insert name="heading" />
-	</h1>
 	<ui:insert name="content" />
-	<p:growl id="growler" widgetVar="growl" showDetail="true" autoUpdate="true" />
+	<p:growl id="growler" widgetVar="growl" showDetail="true"
+		autoUpdate="true" />
 </h:body>
 </html>

@@ -1,0 +1,12 @@
+install Jetty:
+http://www.ubuntugeek.com/install-jetty-9-java-servlet-engine-and-webserver-on-ubuntu-14-10-server.html
+
+install cargo:
+http://cargo.codehaus.org/Jetty+Remote+Deployer
+
+Install & run the webcam:
+Website: http://wolfpaulus.com/jounal/embedded/raspberrypi_webcam/
+Commands:
+export LD_LIBRARY_PATH=/usr/local/lib/
+mjpg_streamer -i "input_uvc.so -n -y -r 320x240 -f 10 -d /dev/video1" -o "output_http.so -p 9000 -w /usr/local/www"
+mjpg_streamer -i "input_uvc.so -n -y -r 320x240 -f 10 -d /dev/video0" -o "output_http.so -p 8090 -w /usr/local/www"

@@ -12,18 +12,20 @@ import service.maestro.MaestroHandler;
 import service.maestro.exceptions.DeviceInUseException;
 import service.maestro.exceptions.DeviceNotFoundException;
 import service.maestro.exceptions.UnknownConnectionFailureException;
+import service.vehicle.exceptions.VehicleUnavailableException;
 
-public class VehicleService
+public class VehicleServiceImpl implements VehicleService
 {
-	private static final Logger LOGGER = Logger.getLogger(VehicleService.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(VehicleServiceImpl.class.getCanonicalName());
 
-	private static VehicleService instance;
+	private static VehicleServiceImpl instance;
+	private ThrottleDirection lastThrottleDirection = null;
 
-	public static VehicleService getInstance()
+	public static VehicleServiceImpl getInstance() throws VehicleUnavailableException
 	{
 		if (instance == null)
 		{
-			instance = new VehicleService();
+			instance = new VehicleServiceImpl();
 		}
 		return instance;
 	}
@@ -31,19 +33,22 @@ public class VehicleService
 	private CalibrationService calibrationService;
 	private MaestroHandler maestroHandler;
 
-	protected VehicleService()
+	protected VehicleServiceImpl() throws VehicleUnavailableException
 	{
 		calibrationService = CalibrationService.getInstance();
 		maestroHandler = MaestroHandler.getInstance();
 		try
 		{
 			maestroHandler.establishConnection();
-		} catch (UnknownConnectionFailureException | DeviceNotFoundException | DeviceInUseException e)
+		}
+		catch (UnknownConnectionFailureException | DeviceNotFoundException | DeviceInUseException e)
 		{
 			LOGGER.log(Level.WARNING, "Error connecting", e);
+			throw new VehicleUnavailableException();
 		}
 	}
 
+	@Override
 	public void steer(SteeringDirection direction, int percent)
 	{
 		VehicleCalibration calibration = calibrationService.getCurrent();
@@ -56,6 +61,7 @@ public class VehicleService
 		return (short) (((fullValue - centreValue) * ((float) percent / 100)) + centreValue);
 	}
 
+	@Override
 	public void steerStraightAhead()
 	{
 		VehicleCalibration calibration = calibrationService.getCurrent();
@@ -63,37 +69,48 @@ public class VehicleService
 		maestroHandler.executeCommand((short) servoIndex, MaestroCommandType.SET_TARGET, (short) calibration.getSteeringCentre());
 	}
 
+	@Override
 	public void applyThrottle(ThrottleDirection direction, int percent)
 	{
 		VehicleCalibration calibration = calibrationService.getCurrent();
 		short targetValue = determineTargetValue(percent, calibration.getFullValue(direction), calibration.getThrottleIdle());
-		if(direction==ThrottleDirection.REVERSE && calibration.isUseDoubleBackForReverse())
+		if (direction == ThrottleDirection.REVERSE && calibration.isUseDoubleBackForReverse() && lastThrottleDirection!=null && lastThrottleDirection==ThrottleDirection.FORWARD)
 		{
-			maestroHandler.executeCommand((short) calibration.getThrottleServoIndex(), MaestroCommandType.SET_TARGET, (short) targetValue);
-			try
-			{
-				Thread.sleep(50);
-			}
-			catch (InterruptedException e)
-			{
-				LOGGER.log(Level.SEVERE, "Unable to pause for reverse", e);
-			}
-			maestroHandler.executeCommand((short) calibration.getThrottleServoIndex(), MaestroCommandType.SET_TARGET, (short) calibration.getThrottleIdle());
-			try
-			{
-				Thread.sleep(50);
-			}
-			catch (InterruptedException e)
-			{
-				LOGGER.log(Level.SEVERE, "Unable to pause for reverse", e);
-			}
+			flickReverse(calibration, targetValue);
 		}
 		maestroHandler.executeCommand((short) calibration.getThrottleServoIndex(), MaestroCommandType.SET_TARGET, (short) targetValue);
+		lastThrottleDirection = direction;
 	}
 
+	private void flickReverse(VehicleCalibration calibration, short targetValue)
+	{
+		int throttleServoIndex = calibration.getThrottleServoIndex();
+		maestroHandler.executeCommand((short) throttleServoIndex, MaestroCommandType.SET_TARGET, (short) targetValue);
+		try
+		{
+			Thread.sleep(50);
+		}
+		catch (InterruptedException e)
+		{
+			LOGGER.log(Level.SEVERE, "Unable to pause for reverse", e);
+		}
+		maestroHandler.executeCommand((short) throttleServoIndex, MaestroCommandType.SET_TARGET,
+				(short) calibration.getThrottleIdle());
+		try
+		{
+			Thread.sleep(50);
+		}
+		catch (InterruptedException e)
+		{
+			LOGGER.log(Level.SEVERE, "Unable to pause for reverse", e);
+		}
+	}
+
+	@Override
 	public void idleThrottle()
 	{
 		VehicleCalibration calibration = calibrationService.getCurrent();
-		maestroHandler.executeCommand((short) calibration.getThrottleServoIndex(), MaestroCommandType.SET_TARGET, (short) calibration.getThrottleIdle());
+		maestroHandler.executeCommand((short) calibration.getThrottleServoIndex(), MaestroCommandType.SET_TARGET,
+				(short) calibration.getThrottleIdle());
 	}
 }

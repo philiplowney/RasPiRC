@@ -1,0 +1,21 @@
+#headerContainer
+{
+	float: left;
+	width: 100%;
+}
+#headerContainer h1
+{
+	float: left;
+	padding: 0px;
+	margin: 0;
+}
+#headerContainer h1.pageHeading
+{
+	float: right;
+}
+body
+{
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}

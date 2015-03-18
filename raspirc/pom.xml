@@ -45,7 +45,7 @@
 					<configuration>
 						<type>runtime</type>
 						<properties>
-							<cargo.hostname>192.168.1.10</cargo.hostname>
+							<cargo.hostname>192.168.1.16</cargo.hostname>
 							<cargo.servlet.port>8080</cargo.servlet.port>
 						</properties>
 					</configuration>

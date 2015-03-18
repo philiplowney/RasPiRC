@@ -9,30 +9,35 @@
 		<ui:define name="header">
 			<h:outputScript library="js" name="controlTest.js" />
 			<h:outputScript library="js" name="d3.min.js" />
+			<h:outputStylesheet library="css" name="drive.css" />
 		</ui:define>
 		<ui:define name="heading">
 			Drive
 		</ui:define>
 		<ui:define name="content">
+			<ui:param name="ipAddress" value="#{controlUI.getIPAddress()}"/>
+			<div class="videoArea" id="rearVideoArea">
+				<img src="#{ipAddress}:9000/?action=stream"/>
+				<h:outputText value="Rear" class="camLabel"/>
+			</div>
 
-			<svg id="steeringWheel"
-				xmlns="http://www.w3.org/2000/svg">
+			<div class="videoArea" id="forwardVideoArea">
+				<img src="#{ipAddress}:8090/?action=stream"/>
+				<h:outputText value="Front" class="camLabel"/>
+			</div>
+			
+			<svg id="steeringWheel" xmlns="http://www.w3.org/2000/svg">
 
-				<path 
+				<path transform="scale(0.3,0.3)"
 					d="M464.5 53.5q184.5 0 315.5 131t131 315.5 -131 315.5 -315.5 131 -315.5 -131 -131 -315.5 131 -315.5 315.5 -131zm0 112q-106.5 0 -192.5 62t-122 161l629 0q-36 -99 -122 -161t-192.5 -62zm-.5 390q24 0 40.5 -16.5t16.5 -39.5q0 -24 -17 -40t-39.5 -16 -39 16 -16.5 40 16.5 40 38.5 16zm-334 -56q0 124 79 216.5t199 112.5q-2 -137 -83 -233t-195 -96zm391 329q120 -20 199 -112.5t79 -216.5q-114 0 -195 96t-83 233z" />
-			</svg>
-
+				</svg>
+			<div id="throttleArea">
+				<span class="throttleText" id="forward">Forward</span> <span
+					class="throttleText" id="idle">Idle</span> <span
+					class="throttleText" id="reverse">Reverse</span>
+			</div>
+			#{controlUI.init()}
 			<h:form id="mainForm">
-				<p:commandButton value="Left" action="#{controlUI.clickLeft(100)}" />
-				<p:commandButton value="Right" action="#{controlUI.clickRight(100)}" />
-				<p:commandButton value="Straight"
-					action="#{controlUI.clickStraight()}" />
-				<p:commandButton value="Forward"
-					action="#{controlUI.clickForward(100)}" />
-				<p:commandButton value="Reverse"
-					action="#{controlUI.clickReverse(100)}" />
-				<p:commandButton value="Idle" action="#{controlUI.clickIdle()}" />
-
 				<p:remoteCommand name="goLeft" action="#{controlUI.clickLeft(100)}" />
 				<p:remoteCommand name="goRight"
 					action="#{controlUI.clickRight(100)}" />
